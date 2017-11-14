@@ -40,7 +40,6 @@ void		parse_piece(t_filler *filler, char *line)
 {
 	char	**data;
 	int		i;
-	char	*lol = ft_strnew(0);
 
 	i = 0;
 	if ((data = ft_strsplit(line, ' ')) == NULL)
@@ -78,6 +77,7 @@ void		free_piece(t_filler *filler)
 		if (filler->piece->raw)
 			ft_strdel(&filler->piece->raw);
 		free(filler->piece);
+		filler->piece = NULL;
 	}
 }
 
@@ -126,5 +126,6 @@ void		read_piece(t_filler *filler, char *line)
 		}
 		resolve(filler);
 	}
-	filler->piece->line++;
+	if (filler->piece != NULL)
+		filler->piece->line++;
 }
