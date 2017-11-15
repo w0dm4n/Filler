@@ -24,6 +24,7 @@ t_piece		*alloc_piece()
 	piece->y_size = 0;
 	piece->line = 0;
 	piece->data = NULL;
+	piece->solved = FALSE;
 	return (piece);
 }
 
@@ -114,7 +115,6 @@ void		read_piece(t_filler *filler, char *line)
 	{
 		asprintf(&filler->piece->raw, "%s\n%s", filler->piece->raw, line);
 		filler->piece->parsed = TRUE;
-		log_data(filler->piece->raw, STDIN_FILENO);
 		if ((lines = ft_strsplit(filler->piece->raw, '\n')))
 		{
 			while (lines[i])
@@ -124,7 +124,7 @@ void		read_piece(t_filler *filler, char *line)
 			}
 			ft_free_array((void**)lines);
 		}
-		resolve(filler);
+		find_possible_pieces(filler);
 	}
 	if (filler->piece != NULL)
 		filler->piece->line++;

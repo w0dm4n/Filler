@@ -12,6 +12,23 @@
 
 #include "all.h"
 
+void				free_map(t_filler *filler)
+{
+	int		i;
+
+	i = 0;
+	if (filler->map)
+	{
+		while (i < filler->map->y_size)
+			free(filler->map->data[i++]);
+		free(filler->map->data);
+		if (filler->map->raw)
+			ft_strdel(&filler->map->raw);
+		free(filler->map);
+		filler->map = NULL;
+	}
+}
+
 static void			fill_zero_map(t_map *map)
 {
 	int		i;
@@ -113,8 +130,5 @@ void				fill_map(t_filler *filler)
 			i++;
 		}
 		ft_free_array((void**)lines);
-		ft_strdel(&map->raw);
-		if ((filler->map->raw = ft_strnew(0)) == NULL)
-			return ;
 	}
 }

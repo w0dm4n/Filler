@@ -22,17 +22,25 @@
 # include <string.h>
 
 # include   "../libft/includes/libft.h"
-# define BOOL			int
-# define TRUE			1
-# define FALSE			0
-# define START_GAME		"exec"
-# define FILE_SIZE		150
-# define BUFFER_SIZE	16384
-# define OPEN_ERROR		-1
-# define MAX_MAP_SIZE	10024
-# define USELESS_LINE	1
-# define FIRST_PLAYER	'O'
-# define SECOND_PLAYER	'X'
+# define BOOL					int
+# define TRUE					1
+# define FALSE					0
+# define START_GAME				"exec"
+# define FILE_SIZE				150
+# define BUFFER_SIZE			16384
+# define OPEN_ERROR				-1
+# define MAX_MAP_SIZE			10024
+# define USELESS_LINE			1
+# define FIRST_PLAYER			'O'
+# define SECOND_PLAYER			'X'
+# define POSSIBLE_CELLS_RADIUS	1000
+
+typedef struct			s_point
+{
+	int					x;
+	int					y;
+	BOOL				valid;
+}						t_point;
 
 typedef struct			s_parser
 {
@@ -58,6 +66,7 @@ typedef struct			s_piece
 	char				*raw;
 	int					line;
 	int					parsed;
+	BOOL				solved;
 }						t_piece;
 
 typedef struct			s_filler
@@ -82,15 +91,11 @@ t_filler				*alloc_filler(void);
 void					start_filler(t_filler *filler, char *received);
 
 /*
-**	PARSER
-*/
-t_parser				*parser(char *raw);
-
-/*
 **	MAP
 */
 void					get_base_map(t_filler *filler, char *raw);
 void					fill_map(t_filler *filler);
+void					free_map(t_filler *filler);
 
 /*
 **	LOGGER
@@ -104,7 +109,25 @@ void					read_piece(t_filler *filler, char *line);
 void					free_piece(t_filler *filler);
 
 /*
+**	FINDER
+*/
+void					find_possible_pieces(t_filler *filler);
+
+/*
 **	RESOLVER
 */
-void					resolve(t_filler *filler);
+void					find_valid_points(t_filler *filler, t_point *points, int total_points);
+
+/*
+**	RADIUS
+*/
+void					find_possible_cells_from_radius(int x, int y, int radius, t_filler *filler, int *total_points, t_point *points);
+
+/*
+**	POINT
+*/
+void					fill_zero_point(t_point *point);
+void					init_points(t_point *points, int len);
+void					find_valid_points(t_filler *filler, t_point *points, int total_points);
+void					free_points(t_point **points, int total_points);
 #endif

@@ -36,9 +36,11 @@ SRCBASE_FILLER	=	\
 					filler.c					\
 					map.c						\
 					logger.c					\
-					parser.c					\
 					piece.c						\
 					utils.c						\
+					finder.c					\
+					radius.c					\
+					point.c						\
 					resolver.c					\
 
 SRCS_FILLER			=	$(addprefix $(SRCDIR_FILLER), $(SRCBASE_FILLER))
