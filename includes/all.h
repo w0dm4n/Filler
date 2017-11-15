@@ -33,7 +33,6 @@
 # define USELESS_LINE			1
 # define FIRST_PLAYER			'O'
 # define SECOND_PLAYER			'X'
-# define POSSIBLE_CELLS_RADIUS	1000
 
 typedef struct			s_point
 {
@@ -77,6 +76,8 @@ typedef struct			s_filler
 	BOOL				started;
 	int					player_id;
 	char				*player_name;
+	int					**old_map;
+	t_point				*enemy;
 }						t_filler;
 
 /*

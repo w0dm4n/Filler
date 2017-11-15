@@ -114,7 +114,6 @@ void		read_piece(t_filler *filler, char *line)
 	else if (!filler->piece->parsed)
 	{
 		asprintf(&filler->piece->raw, "%s\n%s", filler->piece->raw, line);
-		filler->piece->parsed = TRUE;
 		if ((lines = ft_strsplit(filler->piece->raw, '\n')))
 		{
 			while (lines[i])

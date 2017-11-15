@@ -50,5 +50,7 @@ t_filler		*alloc_filler(void)
 	filler->map = NULL;
 	filler->parser = NULL;
 	filler->piece = NULL;
+	filler->enemy = NULL;
+	filler->old_map = NULL;
 	return (filler);
 }

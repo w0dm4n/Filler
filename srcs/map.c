@@ -19,9 +19,13 @@ void				free_map(t_filler *filler)
 	i = 0;
 	if (filler->map)
 	{
-		while (i < filler->map->y_size)
-			free(filler->map->data[i++]);
-		free(filler->map->data);
+		if (filler->old_map)
+		{
+			while (i < filler->map->y_size)
+				free(filler->old_map[i++]);
+			free(filler->old_map);
+		}
+		filler->old_map = filler->map->data;
 		if (filler->map->raw)
 			ft_strdel(&filler->map->raw);
 		free(filler->map);
@@ -102,6 +106,59 @@ static void			parse_x_value(char *line, t_map *map, int y_pos)
 	}
 }
 
+void				get_first_enemy(t_filler *filler)
+{
+	int		y;
+	int		x;
+
+	x = 0;
+	y = 0;
+	while (y < filler->map->y_size)
+	{
+		x = 0;
+		while (x < filler->map->x_size)
+		{
+			if (filler->map->data[y][x] != 0 && filler->map->data[y][x] != filler->player_id)
+			{
+				if ((filler->enemy = (t_point*)malloc(sizeof(struct s_point))) != NULL)
+				{
+					filler->enemy->y = y;
+					filler->enemy->x = x;
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
+void				find_new_enemy(t_filler *filler)
+{
+	int y;
+	int x;
+
+	y = 0;
+	x = 0;
+	while (y < filler->map->y_size)
+	{
+		x = 0;
+		while (x < filler->map->x_size)
+		{
+			if (filler->map->data[y][x] != filler->old_map[y][x]
+				&& filler->map->data[y][x] != filler->player_id)
+			{
+				if ((filler->enemy = (t_point*)malloc(sizeof(struct s_point))) != NULL)
+				{
+					filler->enemy->y = y;
+					filler->enemy->x = x;
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 void				fill_map(t_filler *filler)
 {
 	t_map		*map;
@@ -131,4 +188,8 @@ void				fill_map(t_filler *filler)
 		}
 		ft_free_array((void**)lines);
 	}
+	if (!filler->old_map)
+		get_first_enemy(filler);
+	else
+		find_new_enemy(filler);
 }

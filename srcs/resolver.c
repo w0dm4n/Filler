@@ -12,25 +12,6 @@
 
 #include "all.h"
 
-static void			copy_map_data(int **dst, t_map *map)
-{
-	int		y;
-	int		x;
-
-	y = 0;
-	x = 0;
-	while (y < map->y_size)
-	{
-		x = 0;
-		while (x < map->x_size)
-		{
-			dst[y][x] = map->data[y][x];
-			x++;
-		}
-		y++;
-	}
-}
-
 static BOOL			can_fill_piece(t_filler *filler, t_point *point)
 {
 	int		current_y = point->y;
@@ -51,8 +32,6 @@ static BOOL			can_fill_piece(t_filler *filler, t_point *point)
 		{
 			if (current_x >= filler->map->x_size || current_x < 0)
 				return (FALSE);
-			// if (piece->data[index_y][index_x] == 0 && map[current_y][current_x] != 0)
-			// 	return (FALSE);
 			if (map[current_y][current_x] == filler->player_id && piece->data[index_y][index_x] != 0)
 				touched++;
 			else if (piece->data[index_y][index_x] != 0

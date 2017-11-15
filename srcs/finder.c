@@ -24,7 +24,8 @@ void			find_points(t_point *points, int *total_points, t_filler *filler)
 		x = 0;
 		while (x < filler->map->x_size)
 		{
-			if (filler->map->data[y][x] == 0)
+			if (filler->map->data[y][x] == 0 ||
+				filler->map->data[y][x] == filler->player_id)
 			{
 				points[*total_points].y = y;
 				points[*total_points].x = x;
@@ -108,25 +109,29 @@ t_point			*find_closest_from_enemy(t_point *points, int total_points, t_filler *
 
 	points_len = 0;
 	init_points((t_point*)&enemy_points, possible_points);
-	get_enemy_points((t_point*)&enemy_points, filler, &points_len);
 	int i = 1;
 	int d = 0;
+	int x = 0;
 	t_point *current = NULL;
 	int y_diff = 0;
+	int x_diff = 0;
 	while (i < total_points)
 	{
 		if (points[i].valid)
 		{
-			t_point *enemy = get_close_enemy_from_point(&points[i], (t_point*)&enemy_points, enemy_len);
-			if (enemy)
+			if (filler->enemy)
 			{
-				y_diff = points[i].y - enemy->y;
+				y_diff = points[i].y - filler->enemy->y;
+				x_diff = points[i].x - filler->enemy->x;
 				if (y_diff < 0)
 					y_diff = -y_diff;
-				if (d == 0 || y_diff < d)
+				if (x_diff < 0)
+					x_diff = -x_diff;
+				if (d == 0 || y_diff < d || x_diff < x)
 				{
 					current = &points[i];
 					d = y_diff;
+					x = x_diff;
 				}
 			}
 		}
